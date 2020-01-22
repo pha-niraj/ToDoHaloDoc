@@ -21,12 +21,10 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
          var dataArrayList= ArrayList<Todo>()
+         var currentDataList = ArrayList<Todo>()
     }
 
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
-    private lateinit var filetSpinner : Spinner
-    private lateinit var sortSpinner : Spinner
-    private var currentDataList = ArrayList<Todo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,18 +41,15 @@ class MainActivity : AppCompatActivity() {
         )
 
         addData()
-        recyclerViewAdapter = RecyclerViewAdapter(dataArrayList,this)
+        recyclerViewAdapter = RecyclerViewAdapter(dataArrayList)
 
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = recyclerViewAdapter
 
-        filetSpinner = filetr_spinner
-        sortSpinner = sort_spinner
+        filter_spinner.adapter = filterAdapter
+        sort_spinner.adapter = sortAdapter
 
-        filetSpinner.adapter = filterAdapter
-        sortSpinner.adapter = sortAdapter
-
-        filetSpinner.onItemSelectedListener = object : OnItemSelectedListener {
+        filter_spinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>, view: View,
                 position: Int, id: Long
@@ -80,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        sortSpinner.onItemSelectedListener = object : OnItemSelectedListener {
+        sort_spinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 if (position==1){
                     val sortedData=currentDataList.sortedWith(Comparator { d1, d2 -> d1.title.compareTo(d2.title) })
